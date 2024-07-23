@@ -16,7 +16,7 @@ COPY . /
 
 RUN npm install
 RUN task shadowbox:build TARGET_DIR=/setup/build/
-COPY --from=build-go /setup/outline-ss-server /build/bin/
+COPY --from=build-go /setup/outline-ss-server /setup/build/bin/
 
 # https://github.com/Jigsaw-Code/outline-server/blob/master/src/shadowbox/Taskfile.yml#L64
 FROM node:18.18.0-alpine3.18 AS deploy
@@ -25,7 +25,7 @@ ENV SB_STATE_DIR=/shadowbox/state
 ENV SB_API_PREFIX=api
 ENV SB_CERTIFICATE_FILE=/shadowbox/state/shadowbox-selfsigned.crt
 ENV SB_PRIVATE_KEY_FILE=/shadowbox/state/shadowbox-selfsigned.key
-VOLUME ["${SB_STATE_DIR}"]
+VOLUME ${SB_STATE_DIR}
 
 # Default API port
 EXPOSE 8081
@@ -52,12 +52,14 @@ RUN /etc/periodic/weekly/update_mmdb.sh
 
 WORKDIR /shadowbox/
 
-COPY --from=build-node /setup/build/app/ /app/
-COPY --from=build-node /setup/build/bin/ /bin/
+COPY --from=build-node /setup/build/app/ /shadowbox/app/
+COPY --from=build-node /setup/build/bin/ /shadowbox/bin/
 
 COPY /docker-entrypoint.sh /docker-entrypoint.sh
 COPY /docker-setup.sh /docker-setup.sh
 RUN chmod +x /docker-entrypoint.sh
 RUN chmod +x /docker-setup.sh
+
+RUN /docker-setup.sh
 
 ENTRYPOINT /docker-entrypoint.sh

@@ -1,16 +1,16 @@
 services:
   shadowbox:
-    image: diffusehyperion/outline-vpn:testing
+    image: diffusehyperion/outline-vpn
     container_name: shadowbox
     restart: unless-stopped
     volumes:
-      - shadowbox-state:/shadowbox
+      - shadowbox-state:/shadowbox/state
     environment:
-      - SB_STATE_DIR=/shadowbox
+      - SB_STATE_DIR=/shadowbox/state
       - SB_API_PORT=12345
       - SB_API_PREFIX=tzCg0XYjtOJQAWom4sq7IA # Random 16 bit url-safe base64 string
-      - SB_CERTIFICATE_FILE=/shadowbox/shadowbox-selfsigned.crt
-      - SB_PRIVATE_KEY_FILE=/shadowbox/shadowbox-selfsigned.key
+      - SB_CERTIFICATE_FILE=/shadowbox/state/shadowbox-selfsigned.crt
+      - SB_PRIVATE_KEY_FILE=/shadowbox/state/shadowbox-selfsigned.key
       # - SB_METRICS_URL=
     labels:
       - com.centurylinklabs.watchtower.enable=true
