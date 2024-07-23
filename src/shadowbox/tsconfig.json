@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "removeComments": false,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "module": "commonjs",
+    "rootDir": ".",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "include": ["server/main.ts", "**/*.spec.ts", "types/**/*.d.ts"],
+  "exclude": ["build", "node_modules"]
+}

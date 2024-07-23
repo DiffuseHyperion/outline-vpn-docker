@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "removeComments": false,
+    "strict": true,
+    "module": "commonjs",
+    "outDir": "../../build/metrics_server",
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts"]
+}

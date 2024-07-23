@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "removeComments": false,
+    "strict": true,
+    "module": "commonjs",
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts"]
+}

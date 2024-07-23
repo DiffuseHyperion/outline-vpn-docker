@@ -1,0 +1,30 @@
+services:
+  shadowbox:
+    image: diffusehyperion/outline-vpn:testing
+    container_name: shadowbox
+    restart: unless-stopped
+    volumes:
+      - shadowbox-state:/shadowbox
+    environment:
+      - SB_STATE_DIR=/shadowbox
+      - SB_API_PORT=12345
+      - SB_API_PREFIX=tzCg0XYjtOJQAWom4sq7IA # Random 16 bit url-safe base64 string
+      - SB_CERTIFICATE_FILE=/shadowbox/shadowbox-selfsigned.crt
+      - SB_PRIVATE_KEY_FILE=/shadowbox/shadowbox-selfsigned.key
+      # - SB_METRICS_URL=
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+ 
+networks:
+  default:
+    name: outline-vpn
+
+volumes:
+  shadowbox-state:
+    name: shadowbox-state
