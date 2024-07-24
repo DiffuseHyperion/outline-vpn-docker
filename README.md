@@ -2,6 +2,63 @@
 
 Repository containing a multi-platform shadowbox docker image to run in a generic docker-compose.yml file.
 
+**CURRENTLY USABLE, BUT SOMEWHAT BROKEN! Metrics are currently broken in the current build, but you should still be able to connect to the shadowsocks service.** Images are currently tagged as `diffusehyperion/outline-vpn:beta` until this is fixed.
+
+I also have no clue if watchtower is actually working lol
+
+## Usage
+1. You will need to install [Outline Manager](https://getoutline.org/get-started/#step-1) first.
+
+2. After installing, click on "Set up Outline Anywhere".
+
+<img src="docs/setup-1.png" height="400" width="auto"></img>
+
+3. Run the below compose stack on your server:
+
+```
+services:
+  shadowbox:
+    image: diffusehyperion/outline-vpn:beta
+    container_name: shadowbox
+    restart: unless-stopped
+    volumes:
+      - shadowbox-state:/shadowbox/state
+    environment:
+      - SB_STATE_DIR=/shadowbox/state
+      - SB_API_PREFIX=api
+      - SB_CERTIFICATE_FILE=/shadowbox/state/shadowbox-selfsigned.crt
+      - SB_PRIVATE_KEY_FILE=/shadowbox/state/shadowbox-selfsigned.key
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    ports:
+      - 8081:8081
+      - 8082:8082
+      - 8082:8082/udp
+      - 9090-9092:9090-9092
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+ 
+networks:
+  default:
+    name: outline-vpn
+
+volumes:
+  shadowbox-state:
+    name: shadowbox-state
+```
+
+4. Run `docker exec shadowbox cat /access.txt`.
+
+5. Copy the output into Outline Manager.
+
+<img src="docs/setup-2.png" height="400" width="auto"></img>
+
+6. Proceed with normal installation.
+
 # Outline Server (Shadowbox)
 
 The Outline Server, internal name "Shadowbox," is designed to streamline the setup and sharing of Shadowsocks servers. It includes a user management API and creates Shadowsocks instances when needed. It's managed by the [Outline Manager](https://github.com/Jigsaw-Code/outline-apps/) and used as proxy by the [Outline Client](https://github.com/Jigsaw-Code/outline-apps/) apps. Shadowbox is also compatible with standard Shadowsocks clients.
