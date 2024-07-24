@@ -123,11 +123,11 @@ async function main() {
   const prometheusPort = await portProvider.reserveFirstFreePort(9090);
   // Use 127.0.0.1 instead of localhost for Prometheus because it's resolving incorrectly for some users.
   // See https://github.com/Jigsaw-Code/outline-server/issues/341
-  const prometheusLocation = `127.0.0.1:${prometheusPort}`;
+  const prometheusLocation = `0.0.0.0:${prometheusPort}`;
 
   const nodeMetricsPort = await portProvider.reserveFirstFreePort(prometheusPort + 1);
   exportPrometheusMetrics(prometheus.register, nodeMetricsPort);
-  const nodeMetricsLocation = `127.0.0.1:${nodeMetricsPort}`;
+  const nodeMetricsLocation = `0.0.0.0:${nodeMetricsPort}`;
 
   const ssMetricsPort = await portProvider.reserveFirstFreePort(nodeMetricsPort + 1);
   logging.info(`Prometheus is at ${prometheusLocation}`);
@@ -143,7 +143,7 @@ async function main() {
     ],
   };
 
-  const ssMetricsLocation = `127.0.0.1:${ssMetricsPort}`;
+  const ssMetricsLocation = `0.0.0.0:${ssMetricsPort}`;
   logging.info(`outline-ss-server metrics is at ${ssMetricsLocation}`);
   prometheusConfigJson.scrape_configs.push({
     job_name: 'outline-server-ss',
