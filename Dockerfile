@@ -37,8 +37,6 @@ EXPOSE 8081
 # Access key port
 EXPOSE 8082
 EXPOSE 8082/udp
-# Prometheus & related metric services port
-EXPOSE 9090 9091 9092
 
 STOPSIGNAL SIGKILL
 

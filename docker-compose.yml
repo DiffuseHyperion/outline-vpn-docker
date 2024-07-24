@@ -16,7 +16,6 @@ services:
       - 8081:8081
       - 8082:8082
       - 8082:8082/udp
-      - 9090-9092:9090-9092
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
