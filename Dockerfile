@@ -14,12 +14,17 @@ COPY --from=build-go /setup/task /usr/local/bin/
 WORKDIR /setup/
 COPY . /
 
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+RUN apk add --no-cache --upgrade chromium
+
 RUN npm install
 RUN task shadowbox:build TARGET_DIR=/setup/build/
 COPY --from=build-go /setup/outline-ss-server /setup/build/bin/
 
 # https://github.com/Jigsaw-Code/outline-server/blob/master/src/shadowbox/Taskfile.yml#L64
 FROM node:18.18.0-alpine3.18 AS deploy
+
+# https://github.com/puppeteer/puppeteer/issues/7740
 
 ENV SB_STATE_DIR=/shadowbox/state
 ENV SB_API_PREFIX=api

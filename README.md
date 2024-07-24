@@ -6,6 +6,8 @@ Repository containing a multi-platform shadowbox docker image to run in a generi
 
 I also have no clue if watchtower is actually working lol
 
+Available on Dockerhub: https://hub.docker.com/r/diffusehyperion/outline-vpn
+
 ## Usage
 1. You will need to install [Outline Manager](https://getoutline.org/get-started/#step-1) first.
 
