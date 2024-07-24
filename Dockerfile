@@ -21,6 +21,8 @@ COPY --from=build-go /setup/outline-ss-server /setup/build/bin/
 # https://github.com/Jigsaw-Code/outline-server/blob/master/src/shadowbox/Taskfile.yml#L64
 FROM node:18.18.0-alpine3.18 AS deploy
 
+ENV API_PORT=8081
+ENV ACCESS_KEY_PORT=8082
 ENV SB_STATE_DIR=/shadowbox/state
 ENV SB_API_PREFIX=api
 ENV SB_CERTIFICATE_FILE=/shadowbox/state/shadowbox-selfsigned.crt
@@ -29,21 +31,20 @@ VOLUME ${SB_STATE_DIR}
 
 # Default API port
 EXPOSE 8081
-# Access key port (tf is access key)
-EXPOSE 9999
-EXPOSE 9999/udp
+# Access key port
+EXPOSE 8082
+EXPOSE 8082/udp
 # Prometheus & related metric services port
 EXPOSE 9090 9091 9092
 
 STOPSIGNAL SIGKILL
 
-RUN apk add --no-cache --upgrade coreutils curl openssl bash
+RUN apk add --no-cache --upgrade coreutils curl openssl jq
 
 RUN mkdir /shadowbox/
 RUN mkdir /shadowbox/app/
 RUN mkdir /shadowbox/bin/
 RUN mkdir -p ${SB_STATE_DIR}
-RUN chmod u+s,ug+rwx,o-rwx /shadowbox/
 
 RUN mkdir -p /etc/periodic/weekly/
 COPY /src/shadowbox/scripts/update_mmdb.sh /etc/periodic/weekly/update_mmdb.sh

@@ -6,13 +6,19 @@ services:
     volumes:
       - shadowbox-state:/shadowbox/state
     environment:
+      - API_PORT=8081
+      - ACCESS_KEY_PORT=8082
       - SB_STATE_DIR=/shadowbox/state
       - SB_API_PREFIX=api
       - SB_CERTIFICATE_FILE=/shadowbox/state/shadowbox-selfsigned.crt
       - SB_PRIVATE_KEY_FILE=/shadowbox/state/shadowbox-selfsigned.key
-      # - SB_METRICS_URL=
     labels:
       - com.centurylinklabs.watchtower.enable=true
+    ports:
+      - 8081:8081
+      - 8082:8082
+      - 8082:8082/udp
+      - 9090-9092:9090-9092
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
