@@ -9,6 +9,6 @@ CERT_HEX_FINGERPRINT="$(echo "${CERT_OPENSSL_FINGERPRINT#*=}" | tr -d :)" || ret
 
 PUBLIC_API_URL="https://${PUBLIC_HOSTNAME}:${API_PORT}/${SB_API_PREFIX}"
 
-jq -n --arg key_port "${ACCESS_KEY_PORT}" --arg hostname "${PUBLIC_HOSTNAME}" '{"portForNewAccessKeys":($key_port | tonumber), "hostname":"$hostname"}' > "${SB_STATE_DIR}/shadowbox_server_config.json"
+jq -n --arg hostname "${PUBLIC_HOSTNAME}" '{"portForNewAccessKeys":8082, "hostname":$hostname}' > "${SB_STATE_DIR}/shadowbox_server_config.json"
 
-jq -n --arg api_url "${PUBLIC_API_URL}" --arg fingerprint "${CERT_HEX_FINGERPRINT}" '{"apiUrl":"$api_url", "certSha256":"$fingerprint"}' > /access.txt
+jq -n --arg api_url "${PUBLIC_API_URL}" --arg fingerprint "${CERT_HEX_FINGERPRINT}" '{"apiUrl":$api_url, "certSha256":$fingerprint}' > /access.txt

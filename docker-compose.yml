@@ -6,8 +6,6 @@ services:
     volumes:
       - shadowbox-state:/shadowbox/state
     environment:
-      - API_PORT=8081
-      - ACCESS_KEY_PORT=8082
       - SB_STATE_DIR=/shadowbox/state
       - SB_API_PREFIX=api
       - SB_CERTIFICATE_FILE=/shadowbox/state/shadowbox-selfsigned.crt

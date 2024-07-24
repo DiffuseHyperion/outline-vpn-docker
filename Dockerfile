@@ -21,8 +21,6 @@ COPY --from=build-go /setup/outline-ss-server /setup/build/bin/
 # https://github.com/Jigsaw-Code/outline-server/blob/master/src/shadowbox/Taskfile.yml#L64
 FROM node:18.18.0-alpine3.18 AS deploy
 
-ENV API_PORT=8081
-ENV ACCESS_KEY_PORT=8082
 ENV SB_STATE_DIR=/shadowbox/state
 ENV SB_API_PREFIX=api
 ENV SB_CERTIFICATE_FILE=/shadowbox/state/shadowbox-selfsigned.crt
