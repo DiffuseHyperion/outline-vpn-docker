@@ -4,6 +4,8 @@ Repository containing a multi-platform shadowbox docker image to run in a generi
 
 **CURRENTLY USABLE, BUT SOMEWHAT BROKEN! Metrics are currently broken in the current build, but you should still be able to connect to the shadowsocks service.** Images are currently tagged as `diffusehyperion/outline-vpn:beta` until this is fixed.
 
+**ARM IS ALSO NOT AVAILABLE ATM, will fix soon**
+
 I also have no clue if watchtower is actually working lol
 
 ## Usage
