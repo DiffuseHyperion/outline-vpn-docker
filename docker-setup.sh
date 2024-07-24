@@ -7,8 +7,8 @@ openssl req -x509 -nodes -days 36500 -newkey rsa:4096 -subj "/CN=${PUBLIC_HOSTNA
 CERT_OPENSSL_FINGERPRINT="$(openssl x509 -in "${SB_CERTIFICATE_FILE}" -noout -sha256 -fingerprint)" || return
 CERT_HEX_FINGERPRINT="$(echo "${CERT_OPENSSL_FINGERPRINT#*=}" | tr -d :)" || return
 
-PUBLIC_API_URL="https://${PUBLIC_HOSTNAME}:${API_PORT}/${SB_API_PREFIX}"
-LOCAL_API_URL="https://localhost:${API_PORT}/${SB_API_PREFIX}"
+PUBLIC_API_URL="https://${PUBLIC_HOSTNAME}:8081/${SB_API_PREFIX}"
+LOCAL_API_URL="https://localhost:8081/${SB_API_PREFIX}"
 
 curl --silent --show-error --fail --insecure --request POST "${LOCAL_API_URL}/access-keys" >&2
 
