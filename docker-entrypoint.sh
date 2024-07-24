@@ -17,6 +17,12 @@
 export SB_PUBLIC_IP="${SB_PUBLIC_IP:-$(curl --silent https://ipinfo.io/ip)}"
 export SB_METRICS_URL="${SB_METRICS_URL:-https://prod.metrics.getoutline.org}"
 
+PUBLIC_HOSTNAME="$(curl --silent --show-error --fail --ipv4 "https://icanhazip.com/")"
+PUBLIC_API_URL="https://${PUBLIC_HOSTNAME}:8081/${SB_API_PREFIX}"
+CERT_OPENSSL_FINGERPRINT="$(openssl x509 -in "${SB_CERTIFICATE_FILE}" -noout -sha256 -fingerprint)" || return
+CERT_HEX_FINGERPRINT="$(echo "${CERT_OPENSSL_FINGERPRINT#*=}" | tr -d :)" || return
+jq -n --arg api_url "${PUBLIC_API_URL}" --arg fingerprint "${CERT_HEX_FINGERPRINT}" '{"apiUrl":$api_url, "certSha256":$fingerprint}' > /access.txt
+
 # Make sure we don't leak readable files to other users.
 umask 0007
 
