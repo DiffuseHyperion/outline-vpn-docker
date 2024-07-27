@@ -54,7 +54,7 @@ async function exportPrometheusMetrics(registry: prometheus.Registry, port): Pro
     server.on('listening', () => {
       resolve(server);
     });
-    server.listen({port, host: 'localhost', exclusive: true});
+    server.listen({port, host: '127.0.0.1', exclusive: true});
   });
 }
 
