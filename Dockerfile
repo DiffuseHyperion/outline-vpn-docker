@@ -58,8 +58,6 @@ COPY --from=build-node /setup/build/app/ /shadowbox/app/
 COPY --from=build-node /setup/build/bin/ /shadowbox/bin/
 
 COPY /docker-entrypoint.sh /docker-entrypoint.sh
-COPY /docker-setup.sh /docker-setup.sh
 RUN chmod +x /docker-entrypoint.sh
-RUN chmod +x /docker-setup.sh
 
 ENTRYPOINT /docker-entrypoint.sh
