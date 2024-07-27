@@ -62,6 +62,4 @@ COPY /docker-setup.sh /docker-setup.sh
 RUN chmod +x /docker-entrypoint.sh
 RUN chmod +x /docker-setup.sh
 
-RUN /docker-setup.sh
-
 ENTRYPOINT /docker-entrypoint.sh
