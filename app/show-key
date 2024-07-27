@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ -z $1 ]; then
+  echo "Usage: $0 <access-key-id>"
+  exit 1
+fi
+
+URL="https://127.0.0.1:8081/api/access-keys/$1"
+
+RESPONSE=$(curl --insecure -s -o /tmp/access-key -w "%{http_code}" "$URL")
+
+if [ "$RESPONSE" -eq 200 ]; then
+  jq -r ".accessUrl" /tmp/access-key
+elif [ "$RESPONSE" -eq 404 ]; then
+  echo "Error: Key not found (404)"
+else
+  echo "Error: Unknown response code of $RESPONSE"
+fi
+
+rm /tmp/access-key

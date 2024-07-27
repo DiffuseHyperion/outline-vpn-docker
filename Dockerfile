@@ -57,6 +57,9 @@ WORKDIR /shadowbox/
 COPY --from=build-node /setup/build/app/ /shadowbox/app/
 COPY --from=build-node /setup/build/bin/ /shadowbox/bin/
 
+RUN mkdir /app
+COPY /app/* /app/
+
 COPY /docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
