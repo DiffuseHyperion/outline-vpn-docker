@@ -1,6 +1,6 @@
 #!/bin/sh
 
-URL="https://127.0.0.1:8081/api/access-keys"
+URL="https://127.0.0.1:8081/${SB_API_PREFIX}/access-keys"
 
 curl --insecure -s -o /tmp/access-key -X POST "$URL"
 

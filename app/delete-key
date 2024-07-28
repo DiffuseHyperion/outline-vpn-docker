@@ -5,7 +5,7 @@ if [ -z $1 ]; then
   exit 1
 fi
 
-URL="https://127.0.0.1:8081/api/access-keys/$1"
+URL="https://127.0.0.1:8081/${SB_API_PREFIX}/access-keys/$1"
 
 RESPONSE=$(curl --insecure -X DELETE -s -o /tmp/access-key -w "%{http_code}" "$URL")
 
