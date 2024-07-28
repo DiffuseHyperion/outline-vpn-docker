@@ -2,64 +2,25 @@
 
 Repository containing a multi-platform shadowbox docker image to run in a generic docker-compose.yml file.
 
-**CURRENTLY USABLE, BUT SOMEWHAT BROKEN! Metrics are currently broken in the current build, but you should still be able to connect to the shadowsocks service.** Images are currently tagged as `diffusehyperion/outline-vpn:beta` until this is fixed.
-
-I also have no clue if watchtower is actually working lol
-
 Available on Dockerhub: https://hub.docker.com/r/diffusehyperion/outline-vpn
 
 ## Usage
-1. You will need to install [Outline Manager](https://getoutline.org/get-started/#step-1) first.
+1. Run the compose stack [here](https://github.com/DiffuseHyperion/outline-vpn-docker/blob/main/docker-compose.yml).
 
-2. After installing, click on "Set up Outline Anywhere".
+2. Create an access key with `docker exec shadowbox /app/create-key`.
 
-<img src="docs/setup-1.png" height="400" width="auto"></img>
+3. Copy the given URL into your Outline Client.
 
-3. Run the below compose stack on your server:
+There are also other scripts to help manage keys:
+- `/app/list-keys` shows all access keys and their corresponding ID.
+- `/app/delete-key <id>` deletes the access key with the ID provided.
+- `/app/show-key <id>` shows the connection URL of the access key with the ID provided.
 
-```
-services:
-  shadowbox:
-    image: diffusehyperion/outline-vpn:beta
-    container_name: shadowbox
-    restart: unless-stopped
-    volumes:
-      - shadowbox-state:/shadowbox/state
-    environment:
-      - SB_STATE_DIR=/shadowbox/state
-      - SB_API_PREFIX=api
-      - SB_CERTIFICATE_FILE=/shadowbox/state/shadowbox-selfsigned.crt
-      - SB_PRIVATE_KEY_FILE=/shadowbox/state/shadowbox-selfsigned.key
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
-    ports:
-      - 8081:8081
-      - 8082:8082
-      - 8082:8082/udp
-      - 9090-9092:9090-9092
-  watchtower:
-    image: containrrr/watchtower
-    container_name: watchtower
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
- 
-networks:
-  default:
-    name: outline-vpn
+## Issues
 
-volumes:
-  shadowbox-state:
-    name: shadowbox-state
-```
+Although the image does automatically create an `access.txt` file which contains the JSON needed to paste into Outline Manager, the manager itself is bugged (at least I think so) and doesn't request any data from the server (such as access keys and transfer metrics).
 
-4. Run `docker exec shadowbox cat /access.txt`.
-
-5. Copy the output into Outline Manager.
-
-<img src="docs/setup-2.png" height="400" width="auto"></img>
-
-6. Proceed with normal installation.
+I also have no clue if watchtower actually works lol
 
 # Outline Server (Shadowbox)
 
