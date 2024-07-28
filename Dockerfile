@@ -42,25 +42,23 @@ STOPSIGNAL SIGKILL
 
 RUN apk add --no-cache --upgrade coreutils curl openssl jq
 
-RUN mkdir /shadowbox/
-RUN mkdir /shadowbox/app/
-RUN mkdir /shadowbox/bin/
-RUN mkdir -p ${SB_STATE_DIR}
+COPY app /app
 
 RUN mkdir -p /etc/periodic/weekly/
 COPY /src/shadowbox/scripts/update_mmdb.sh /etc/periodic/weekly/update_mmdb.sh
 RUN chmod +x /etc/periodic/weekly/update_mmdb.sh
 RUN /etc/periodic/weekly/update_mmdb.sh
 
-WORKDIR /shadowbox/
+RUN mkdir /shadowbox/
+RUN mkdir /shadowbox/app/
+RUN mkdir /shadowbox/bin/
+RUN mkdir -p ${SB_STATE_DIR}
 
 COPY --from=build-node /setup/build/app/ /shadowbox/app/
 COPY --from=build-node /setup/build/bin/ /shadowbox/bin/
 
-RUN mkdir /app
-COPY /app/* /app/
-
 COPY /docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
+WORKDIR /shadowbox/
 ENTRYPOINT /docker-entrypoint.sh
